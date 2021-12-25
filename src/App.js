@@ -11,31 +11,29 @@ function App() {
 
   useEffect(() => {
     gelLocalTodos();
-  }, [])
-
+  }, []);
 
   useEffect(() => {
+    const filterHandler = () => {
+      switch (status) {
+        case "completed":
+          setFilteredTodos(todos.filter((todo) => todo.completed === true));
+          break;
+        case "uncompleted":
+          setFilteredTodos(todos.filter((todo) => todo.completed === false));
+          break;
+        default:
+          setFilteredTodos(todos);
+      }
+    };
+
+    /// SAVE TO LOCAL STORAGE
+    const saveLocalTodos = () => {
+      localStorage.setItem("todos", JSON.stringify(todos));
+    };
     filterHandler();
     saveLocalTodos();
   }, [todos, status]);
-
-  const filterHandler = () => {
-    switch (status) {
-      case "completed":
-        setFilteredTodos(todos.filter((todo) => todo.completed === true));
-        break;
-      case "uncompleted":
-        setFilteredTodos(todos.filter((todo) => todo.completed === false));
-        break;
-      default:
-        setFilteredTodos(todos);
-    }
-  };
-
-  /// SAVE TO LOCAL STORAGE
-  const saveLocalTodos = () => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  };
 
   /// GET FROM LOCAL STORAGE
   const gelLocalTodos = () => {
@@ -45,7 +43,7 @@ function App() {
       let todoLocal = JSON.parse(localStorage.getItem("todos"));
       setTodos(todoLocal);
     }
-  }
+  };
 
   return (
     <div className="App">
